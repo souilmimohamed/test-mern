@@ -7,9 +7,9 @@ import logger from "../shared/logger.js";
 let responseModel = new ResponseModel();
 
 export const Login = async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
   try {
-    let response = await new LoginHandler({ username, password }).handle();
+    let response = await new LoginHandler({ email, password }).handle();
     res.status(200).send(response);
   } catch (error) {
     logger.logRequestError(req, error);

@@ -5,19 +5,24 @@ import { GetUserData } from "../shared/apis/authenticationApis";
 export const AuthContext = React.createContext();
 export const AuthProvider = ({ children }) => {
   const token = localStorage.getItem("token");
+  const userdata = JSON.parse(localStorage.getItem("userData"));
   const [loggedIn, setLoggedIn] = useState(token ? true : false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(userdata ? userdata : null);
 
-  const login = async (username, password) => {
+  const login = async (credentials) => {
     setIsLoading(true);
-    const response = await Login(username, password);
+    const { email, password } = credentials;
+    const response = await Login(email, password);
     if (response.Success) {
       setLoggedIn(true);
       setIsLoading(false);
       setError(null);
       localStorage.setItem("token", response.Body);
-      await GetUserData();
+      const user_data = await GetUserData();
+      setUserData(user_data);
+      console.log(user_data);
       window.location.reload();
     } else {
       setError(response.Errors);
@@ -35,7 +40,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoading, login, logout, loggedIn, error }}>
+    <AuthContext.Provider
+      value={{ isLoading, login, logout, loggedIn, error, userData }}
+    >
       {children}
     </AuthContext.Provider>
   );

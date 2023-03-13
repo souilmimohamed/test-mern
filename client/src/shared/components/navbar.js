@@ -1,15 +1,23 @@
 import { IoLogoReact } from "react-icons/io5";
 import { BsList, BsThreeDotsVertical, BsSearch } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/authContext";
+import { CgProfile } from "react-icons/cg";
+import { BsFiles } from "react-icons/bs";
+import { AiOutlineLogout, AiOutlineShoppingCart } from "react-icons/ai";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const { loggedIn } = useContext(AuthContext);
-
+  const { loggedIn, logout, userData } = useContext(AuthContext);
+  const [profileOpen, setProfileOpen] = useState(false);
+  useEffect(() => {
+    document.addEventListener("click", () => {
+      setProfileOpen(false);
+    });
+  }, [profileOpen]);
   return (
     <>
       <nav className="relative px-4 py-4 flex justify-between items-center bg-white">
@@ -72,9 +80,39 @@ const Navbar = () => {
             Sign up
           </button>
         )}
+        {loggedIn && (
+          <button
+            className="hidden lg:inline-block py-1 px-2 bg-gra200 hover:bg-gray-200 text-base text-black font-bold rounded-xl transition duration-200"
+            onMouseEnter={() => setProfileOpen(true)}
+          >
+            <CgProfile className="inline-block mr-2 -mt-1" />
+            {userData && userData.fullname}
+          </button>
+        )}
+        {profileOpen && (
+          <div className="bg-white absolute top-16 right-4 h-28 w-32 rounded-md shadow-md p-2">
+            <button className="p-1 rounded-lg font-bold w-full text-sm mt-1 text-black hover:bg-gray-200 text-left">
+              <BsFiles className="inline-block mr-2" />
+              My Orders
+            </button>
+            <button className="relative p-1 rounded-lg font-bold w-full text-sm mt-1 text-black hover:bg-gray-200 text-left">
+              <div className="absolute top-0 right-0 px-1 bg-green-500 rounded-full">
+                0
+              </div>
+              <AiOutlineShoppingCart className="inline-block mr-2" />
+              My Cart
+            </button>
+            <button
+              className="p-1 rounded-lg font-bold w-full text-sm mt-1 text-black hover:bg-gray-200 text-left"
+              onClick={() => logout()}
+            >
+              <AiOutlineLogout className="inline-block mr-2" />
+              Sign out
+            </button>
+          </div>
+        )}
       </nav>
       <div className={`navbar-menu relative z-50 ${!menuOpen && "hidden"}`}>
-        --------
         <div className="navbar-backdrop fixed inset-0 bg-gray-800 opacity-25"></div>
         <nav className="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto">
           <div className="flex items-center mb-8">

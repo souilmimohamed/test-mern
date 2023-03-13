@@ -15,8 +15,9 @@ class LoginHandler {
       if (!validation.Success) {
         return response.failureReponse(validation.Errors);
       }
-      const { username, password } = this.data;
-      const user = await User.findOne({ username });
+      const { email, password } = this.data;
+      const user = await User.findOne({ email });
+      console.log(user);
       if (user && user.password === password) {
         const token = generatoToken(user);
         return response.successReponse(token);
