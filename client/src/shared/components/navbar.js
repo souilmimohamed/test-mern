@@ -7,6 +7,8 @@ import { AuthContext } from "../../contexts/authContext";
 import { CgProfile } from "react-icons/cg";
 import { BsFiles } from "react-icons/bs";
 import { AiOutlineLogout, AiOutlineShoppingCart } from "react-icons/ai";
+import { GrFavorite } from "react-icons/gr";
+import { FaUsers, FaWarehouse } from "react-icons/fa";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -90,7 +92,7 @@ const Navbar = () => {
           </button>
         )}
         {profileOpen && (
-          <div className="bg-white absolute top-16 right-4 h-28 w-32 rounded-md shadow-md p-2">
+          <div className="bg-white absolute top-16 right-4 w-32 rounded-md shadow-md p-2 z-40">
             <button className="p-1 rounded-lg font-bold w-full text-sm mt-1 text-black hover:bg-gray-200 text-left">
               <BsFiles className="inline-block mr-2" />
               My Orders
@@ -102,6 +104,29 @@ const Navbar = () => {
               <AiOutlineShoppingCart className="inline-block mr-2" />
               My Cart
             </button>
+            <button className="relative p-1 rounded-lg font-bold w-full text-sm mt-1 text-black hover:bg-gray-200 text-left">
+              <div className="absolute top-0 right-0 px-1 bg-green-500 rounded-full">
+                0
+              </div>
+              <GrFavorite className="inline-block mr-2" />
+              Favorites
+            </button>
+
+            {userData && userData.isAdmin && (
+              <>
+                <button className="p-1 rounded-lg font-bold w-full text-sm mt-1 text-black hover:bg-gray-200 text-left">
+                  <FaUsers className="inline-block mr-2" />
+                  Users
+                </button>
+                <button
+                  className="p-1 rounded-lg font-bold w-full text-sm mt-1 text-black hover:bg-gray-200 text-left"
+                  onClick={() => navigate("/products")}
+                >
+                  <FaWarehouse className="inline-block mr-2" />
+                  Products
+                </button>
+              </>
+            )}
             <button
               className="p-1 rounded-lg font-bold w-full text-sm mt-1 text-black hover:bg-gray-200 text-left"
               onClick={() => logout()}

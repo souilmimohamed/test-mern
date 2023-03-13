@@ -5,7 +5,7 @@ export const intercept = axios.interceptors.request.use(
     const url = config.url;
     const token = localStorage.getItem("token");
     if (token) {
-      if (!url.includes("login")) {
+      if (!url.includes("login") && !url.includes("createUser")) {
         config.headers["Authorization"] = "Bearer " + token;
       }
     }

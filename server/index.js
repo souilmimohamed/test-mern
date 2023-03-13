@@ -3,7 +3,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import authenticationRoutes from "./routes/authentication.js";
 import userRoutes from "./routes/users.js";
-import profileRoutes from "./routes/profiles.js";
 import expressOasGenerator from "express-oas-generator";
 import connectDB from "./shared/db.js";
 import colors from "colors";
@@ -16,7 +15,6 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use("/authentication", authenticationRoutes);
 app.use("/users", userRoutes);
-app.use("/profiles", profileRoutes);
 
 const PORT = process.env.PORT || 5000;
 

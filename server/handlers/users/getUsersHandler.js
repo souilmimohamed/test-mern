@@ -1,8 +1,5 @@
 import responseModel from "../../shared/responseModel.js";
 import User from "../../models/user.js";
-import Profile from "../../models/profile.js";
-import parseUserData from "../../parsers/parseUserData.js";
-import ParseUsers from "../../parsers/parseUsersList.js";
 import logger from "../../shared/logger.js";
 
 let response = new responseModel();
@@ -18,21 +15,18 @@ class GetUsersHandler {
         return response.failureReponse(validation.Errors);
       }
       const Users = await User.find();
-      return response.successReponse(await ParseUsers(Users));
+      return response.successReponse(Users);
     } catch (error) {
       logger.log.error(error.message);
       return response.failureReponse(error.message);
     }
   }
   async validate() {
-    let user = await User.findOne({ _id: this.userID });
+    let user = await User.findOne({ _id: this._userID });
     if (!user) {
       return response.failureReponse("user not found");
     } else {
-      let profilesIds = user.profiles;
-      let profiles = await Profile.find({ _id: { $in: [...profilesIds] } });
-      let access = parseUserData(user, profiles);
-      if (!access.access.administration) {
+      if (!user.isAdmin) {
         return response.failureReponse("user dosen't have access.");
       }
     }

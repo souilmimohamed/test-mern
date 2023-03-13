@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 
 const userShema = mongoose.Schema({
-  username: String,
+  email: String,
   password: String,
   fullname: String,
-  email: String,
-  profiles: [String],
+  isAdmin: Boolean,
   createdAt: {
     type: Date,
     default: new Date(),

@@ -1,7 +1,5 @@
 import responseModel from "../../shared/responseModel.js";
 import User from "../../models/user.js";
-import Profile from "../../models/profile.js";
-import parseUserData from "../../parsers/parseUserData.js";
 import mongoose from "mongoose";
 import logger from "../../shared/logger.js";
 
@@ -30,10 +28,7 @@ class UpdateUserHandler {
     if (!user) {
       return response.failureReponse("user not found");
     } else {
-      let profilesIds = user.profiles;
-      let profiles = await Profile.find({ _id: { $in: [...profilesIds] } });
-      let access = parseUserData(user, profiles);
-      if (!access.access.administration) {
+      if (!user.isAdmin) {
         return response.failureReponse("user dosen't have access.");
       }
     }
