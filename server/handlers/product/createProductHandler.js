@@ -1,13 +1,14 @@
 import responseModel from "../../shared/responseModel.js";
 import User from "../../models/user.js";
+import Product from "../../models/product.js";
 import logger from "../../shared/logger.js";
 
 let response = new responseModel();
 
-class CreateUserHandler {
-  constructor(userID, user) {
+class CreateProductHandler {
+  constructor(userID, product) {
     this._userID = userID;
-    this._data = user;
+    this._data = product;
   }
   async handle() {
     try {
@@ -15,8 +16,8 @@ class CreateUserHandler {
       if (!validation.Success) {
         return response.failureReponse(validation.Errors);
       }
-      const newUser = new User(this._data);
-      await newUser.save();
+      const newProduct = new Product(this._data);
+      await newProduct.save();
       return response.successReponse(this._data);
     } catch (error) {
       logger.log.error(error.message);
@@ -36,4 +37,4 @@ class CreateUserHandler {
   }
 }
 
-export default CreateUserHandler;
+export default CreateProductHandler;
